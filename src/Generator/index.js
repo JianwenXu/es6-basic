@@ -6,9 +6,7 @@ function* helloWorldGenerator() {
 
 var hw = helloWorldGenerator();
 
-// hw.next();
-
-// console.log(hw.next());
-// console.log(hw.next());
-// console.log(hw.next());
-// console.log(hw.next());
+console.log(hw.next());
+console.log(hw.next());
+console.log(hw.next());
+console.log(hw.next());
