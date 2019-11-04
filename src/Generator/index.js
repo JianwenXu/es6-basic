@@ -1,24 +1,23 @@
-function* helloWorldGenerator() {
-  yield 'hello';
-  yield 'world';
-  return 'ending';
+// 由于 Generator 函数就是遍历器生成函数，
+// 因此可以把 Generator 赋值给对象的Symbol.iterator属性，
+// 从而使得该对象具有 Iterator 接口。
+
+var myIterable = {};
+
+myIterable[Symbol.iterator] = function* () {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
 }
 
-var hw = helloWorldGenerator();
+console.log([...myIterable]); // [ 1, 2, 3, 4 ]
 
-console.log(hw.next()); // { value: 'hello', done: false }
-console.log(hw.next()); // { value: 'world', done: false }
-console.log(hw.next()); // { value: 'ending', done: true }
-console.log(hw.next()); // { value: undefined, done: true }
+// Generator 函数执行后，返回一个遍历器对象。
+// 该对象本身也具有Symbol.iterator属性，执行后返回自身。
 
-function* helloWorldGenerator2() {
-  yield 'hello';
-  yield 'world';
-}
+function* gen() {}
 
-var hw2 = helloWorldGenerator2();
+var g = gen();
 
-console.log(hw2.next()); // { value: 'hello', done: false }
-console.log(hw2.next()); // { value: 'world', done: false }
-console.log(hw2.next()); // { value: undefined, done: true }
-console.log(hw2.next()); // { value: undefined, done: true }
+console.log(g[Symbol.iterator]() === g); // true
