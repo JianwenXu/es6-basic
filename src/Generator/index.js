@@ -1,23 +1,22 @@
-// 由于 Generator 函数就是遍历器生成函数，
-// 因此可以把 Generator 赋值给对象的Symbol.iterator属性，
-// 从而使得该对象具有 Iterator 接口。
+// 如果想要第一次调用next方法的时候，能够输入值，
+// 可以在Generator函数外部再包一层
 
-var myIterable = {};
+// ?? 不太懂
 
-myIterable[Symbol.iterator] = function* () {
-  yield 1;
-  yield 2;
-  yield 3;
-  yield 4;
+function wrapper(generatorFunction) {
+  return function(...args) {
+    let generatorObject = generatorFunction(...args);
+    generatorObject.next();
+    return generatorObject;
+  };
 }
 
-console.log([...myIterable]); // [ 1, 2, 3, 4 ]
+const wrapped = wrapper(function* () {
+  console.log(`First input: ${yield}`);
+  return 'DONE';
+});
 
-// Generator 函数执行后，返回一个遍历器对象。
-// 该对象本身也具有Symbol.iterator属性，执行后返回自身。
+var g = wrapped();
 
-function* gen() {}
-
-var g = gen();
-
-console.log(g[Symbol.iterator]() === g); // true
+g.next('hello!');
+// g.next('hello!');
