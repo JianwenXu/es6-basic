@@ -1,30 +1,13 @@
 /**
- * 利用Proxy可以将读取属性操作，转变为执行某个函数，从而实现属性的链式操作
+ * Proxy 对象可以拦截目标对象的任意属性，
+ * 这使得它很合适用来写 Web 服务的客户端。
+ *
+ * 上面代码新建了一个 Web 服务的接口，
+ * 这个接口返回各种数据。
+ * Proxy 可以拦截这个对象的任意属性，
+ * 所以不用为每一种数据写一个适配方法，
+ * 只要写一个 Proxy 拦截就可以了。
+ *
+ * 同理，Proxy 也可以用来实现数据库的 ORM 层。
+ *
  */
-
-var pipe = (function() {
-  return function(value) {
-    var funcStack = [];
-    var oproxy = new Proxy({}, {
-      get: function(pipeObject, fnName) {
-        if (fnName === 'get') {
-          return funcStack.reduce(function(val, fn, index, array) {
-            // console.log('fn', val, fn, index, array);
-            return fn(val);
-          }, value);
-        }
-        funcStack.push(window[fnName]);
-        return oproxy;
-      }
-    });
-
-    return oproxy;
-  }
-}());
-
-var double = n => n * 2;
-var pow = n => n * n;
-var reverseInt = n => n.toString().split('').reverse().join('') | 0;
-
-console.log(pipe(3).double.pow.reverseInt.get);
-// console.log(window.double)
