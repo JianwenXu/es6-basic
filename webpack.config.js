@@ -4,12 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
-  entry: ['babel-polyfill','./src/Proxy/index.js'],
+  entry: ['babel-polyfill','./src/Reflect/index.js'],
   devServer: {
     contentBase: './dist',
     hot: true,
     compress: true,
-    port: 9000,
+    port: 9001,
     clientLogLevel: "none",
     quiet: true
   },
