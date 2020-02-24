@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
-  entry: ['babel-polyfill','./src/LetConst/index.js'],
+  entry: ['babel-polyfill','./src/Symbol/index.js'],
   devServer: {
     contentBase: './dist',
     hot: true,
