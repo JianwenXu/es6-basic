@@ -1,45 +1,54 @@
-let s = Symbol(); // 没有 new
+// 内置的 Symbol 值（11个）
 
-console.log('测试 s 类型', typeof s); // symbol
-
-let s1 = Symbol('foo'); // 用于对这个变量进行描述
-let s2 = Symbol('bar');
-
-console.log(s1.toString()); // Symbol(foo)
-console.log(s2.toString()); // Symbol(bar)
-
-// 用于描述的变量可以是对象，这个时候会调用该对象的 toString 方法，将其转化为字符串之后，然后才生成一个 Symbol 值
-let obj = {
-	toString: () => {
-		return 'abc';
+// Symbol.hasInstance
+// 对象的Symbol.hasInstance属性，指向一个内部方法。
+// 当其他对象使用instanceof运算符，判断是否为该对象的实例时，会调用这个方法。
+// 比如，foo instanceof Foo在语言内部，实际调用的是Foo[Symbol.hasInstance](foo)。
+class MyClass {
+	[Symbol.hasInstance](f) {
+		return f instanceof Array;
 	}
-};
-let s3 = Symbol(obj);
+}
+console.log([] instanceof new MyClass()); // true
 
-console.log('s3: ', s3.toString()); // Symbol(abc)
+// class Even {
+// 	static [Symbol.hasInstance](n) {
+// 		return Number(n) % 2 === 0;
+// 	}
+// }
 
-// Symbol 参数只是对 Symbol 的描述，相同参数的 Symbol 返回值是不相等的
-let s01 = Symbol();
-let s02 = Symbol();
-console.log(s01 === s02); // false
+// 这两种定义方式等价
 
-let s03 = Symbol('abc');
-let s04 = Symbol('abc');
-console.log(s03 === s04); // false
+const Even = {
+	[Symbol.hasInstance](n) {
+		return Number(n) % 2 === 0;
+	}
+}
+console.log(1 instanceof Even); // false 
+console.log(2 instanceof Even); // true
+console.log(12345 instanceof Even); // false
 
-// Symbol 值不能与其他类型的值做运算，否则会报错
-// 'test' + s01; // 报错
-// `test ${s01}` // 报错
+// 对象的Symbol.isConcatSpreadable属性等于一个布尔值，表示该对象用于Array.prototype.concat()时，是否可以展开。
 
-// Symbol 可以显式的转化为字符串
+// 对象的Symbol.species属性，指向一个构造函数。创建衍生对象时，会使用该属性。
 
-console.log(s03.toString());
-console.log(String(s03));
+// 对象的Symbol.match属性，指向一个函数。当执行str.match(myObject)时，如果该属性存在，会调用它，返回该方法的返回值。
 
-// Symbol 可以转化为布尔值
-console.log(!s01); // false
-console.log(Boolean(s01)); // true
+// 对象的Symbol.replace属性，指向一个方法，当该对象被String.prototype.replace方法调用时，会返回该方法的返回值。
 
-// Symbol 不能转化为数字
-// Number(s01); // 报错
-1 + s01; // 报错
+// 对象的Symbol.search属性，指向一个方法，当该对象被String.prototype.search方法调用时，会返回该方法的返回值。
+
+// 对象的Symbol.split属性，指向一个方法，当该对象被String.prototype.split方法调用时，会返回该方法的返回值。
+
+// 对象的Symbol.iterator属性，指向该对象的默认遍历器方法。
+
+// 对象的Symbol.toPrimitive属性，指向一个方法。该对象被转为原始类型的值时，会调用这个方法，返回该对象对应的原始类型值。
+
+// 对象的Symbol.toStringTag属性，指向一个方法。
+// 在该对象上面调用Object.prototype.toString方法时，
+// 如果这个属性存在，它的返回值会出现在toString方法返回的字符串之中，表示对象的类型。
+// 也就是说，这个属性可以用来定制[object Object]或[object Array]中object后面的那个字符串。
+
+// 对象的Symbol.unscopables属性，指向一个对象。该对象指定了使用with关键字时，哪些属性会被with环境排除。
+
+
